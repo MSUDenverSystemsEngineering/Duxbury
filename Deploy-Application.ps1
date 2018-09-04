@@ -66,7 +66,7 @@ Try {
 	##*===============================================
 	## Variables: Application
 	[string]$appVendor = 'Duxbury Systems Inc.'
-	[string]$appName = 'DBT'
+	[string]$appName = 'DBT & SWIFT'
 	[string]$appVersion = '1202'
 	[string]$appArch = ''
 	[string]$appLang = 'EN'
@@ -153,6 +153,9 @@ Try {
 
 		## <Perform Post-Installation tasks here>
 
+		$exitCode = Execute-MSI -Action "Install" -Path "$dirSupportFiles\swift-0501.msi" -Parameters '/qn /norestart' -PassThru
+        If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
+
 		## Display a message at the end of the install
 		If (-not $useDefaultMsi) {
 
@@ -188,6 +191,9 @@ Try {
 		# <Perform Uninstallation tasks here>
 
 		$exitCode = Execute-MSI -Action "Uninstall" -Path "{34343340-9943-473D-83FD-B03EF302842F}" -PassThru
+        If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
+
+        $exitCode = Execute-MSI -Action "Uninstall" -Path "{484FDD54-F5BA-4B0B-BFDE-75F3EC5C6BD5}" -PassThru
         If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 
 		##*===============================================
